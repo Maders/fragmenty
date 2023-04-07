@@ -73,13 +73,14 @@ resource "aws_lambda_function" "scrapy_lambda" {
   package_type = "Image"
   image_uri    = "${aws_ecr_repository.scrapy_lambda_repository.repository_url}:latest"
 
+  depends_on = [null_resource.push_image]
 
-  timeout     = 300 # Adjust the timeout based on your Scrapy project's requirements
+  timeout     = 120 # Adjust the timeout based on your Scrapy project's requirements
   memory_size = 256 # Adjust the memory size based on your Scrapy project's requirements
 
   environment {
     variables = {
-      MONGODB_URI = var.mongo_uri
+      MONGO_URI = var.mongo_uri
     }
   }
 }
@@ -89,6 +90,12 @@ resource "aws_cloudwatch_event_rule" "scrapy_lambda_schedule" {
   description         = "Trigger Scrapy Lambda function on a schedule"
   schedule_expression = "rate(30 minutes)" # Adjust the schedule based on your desired frequency
 }
+
+resource "aws_cloudwatch_log_group" "scrapy_lambda_schedule" {
+  name              = "/aws/lambda/ScrapyLambdaFunction"
+  retention_in_days = 7 # Change this value to the desired number of days
+}
+
 
 resource "aws_cloudwatch_event_target" "scrapy_lambda_schedule_target" {
   rule      = aws_cloudwatch_event_rule.scrapy_lambda_schedule.name
