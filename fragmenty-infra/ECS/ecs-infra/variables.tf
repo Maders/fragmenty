@@ -39,3 +39,8 @@ variable "mongo_uri" {
   description = "The MongoDB atlas connection string"
   sensitive   = true
 }
+
+variable "container_image_name" {
+  description = "The name of the application docker image that you build locally"
+  default     = "spider"
+}
