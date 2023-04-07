@@ -1,8 +1,3 @@
-provider "aws" {
-  profile = var.aws_profile
-  region  = var.aws_region
-}
-
 resource "aws_iam_role" "lambda_exec_role" {
   name = "ScrapyLambdaExecutionRole"
 
@@ -58,10 +53,6 @@ resource "aws_iam_role_policy" "lambda_exec_policy" {
 #   content_type = "application/zip"
 # }
 
-resource "aws_ecr_repository" "scrapy_lambda_repository" {
-  name = "fragmenty-registry"
-}
-
 resource "aws_lambda_function" "scrapy_lambda" {
   function_name = "ScrapyLambdaFunction"
   # s3_bucket     = aws_s3_object.lambda_deployment_package.bucket
@@ -71,12 +62,12 @@ resource "aws_lambda_function" "scrapy_lambda" {
   role = aws_iam_role.lambda_exec_role.arn
 
   package_type = "Image"
-  image_uri    = "${aws_ecr_repository.scrapy_lambda_repository.repository_url}:latest"
+  image_uri    = "${aws_ecr_repository.scrapy_lambda_repository.repository_url}:${var.lambda_container_image_name}"
 
-  depends_on = [null_resource.push_image]
+  depends_on = [null_resource.push_spider_image]
 
-  timeout     = 120 # Adjust the timeout based on your Scrapy project's requirements
-  memory_size = 256 # Adjust the memory size based on your Scrapy project's requirements
+  timeout     = 120 # Adjust the timeout based on your project's requirements
+  memory_size = 256 # Adjust the memory size based on your project's requirements
 
   environment {
     variables = {

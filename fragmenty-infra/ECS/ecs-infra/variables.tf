@@ -17,10 +17,6 @@ variable "vpc_id" {
   description = "The VPC ID where resources will be deployed"
 }
 
-variable "hosted_zone_id" {
-  description = "The ID of the Route53 hosted zone where the custom domain resides"
-}
-
 variable "custom_domain" {
   description = "The custom domain name for the application"
 }
@@ -40,7 +36,12 @@ variable "mongo_uri" {
   sensitive   = true
 }
 
-variable "container_image_name" {
+variable "lambda_container_image_name" {
   description = "The name of the application docker image that you build locally"
   default     = "spider"
+}
+
+variable "play_container_image_name" {
+  description = "The name of the application docker image that you build locally"
+  default     = "api"
 }
