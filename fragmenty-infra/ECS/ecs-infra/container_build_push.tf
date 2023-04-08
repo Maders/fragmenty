@@ -12,7 +12,7 @@ resource "null_resource" "push_spider_image" {
   provisioner "local-exec" {
     command = <<EOT
       aws ecr --profile ${var.aws_profile} get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${local.ecr_repository_url}
-      docker build ${var.lambda_container_image_name} "${path.module}/../../../fragmenty-spider/Dockerfile"
+      docker build -t ${var.lambda_container_image_name} "${path.module}/../../../fragmenty-spider/Dockerfile"
       docker tag ${var.lambda_container_image_name}:latest ${local.ecr_repository_url}:${var.lambda_container_image_name}
       docker push ${local.ecr_repository_url}:${var.lambda_container_image_name}
 EOT
@@ -27,7 +27,7 @@ resource "null_resource" "push_play_image" {
   provisioner "local-exec" {
     command = <<EOT
       aws ecr --profile ${var.aws_profile} get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${local.ecr_repository_url}
-      docker build ${var.play_container_image_name} "${path.module}/../../../fragmenty-api/Dockerfile"
+      docker build -t ${var.play_container_image_name} "${path.module}/../../../fragmenty-api/Dockerfile"
       docker tag ${var.play_container_image_name}:latest ${local.ecr_repository_url}:${var.play_container_image_name}
       docker push ${local.ecr_repository_url}:${var.play_container_image_name}
 EOT
