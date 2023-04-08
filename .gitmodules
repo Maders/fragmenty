@@ -1,6 +1,6 @@
 [submodule "fragmenty-api"]
 	path = fragmenty-api
-	url = git@github.com:Maders/fragmenty-api.git
+	url = https://github.com/Maders/fragmenty-api.git
 [submodule "fragmenty-spider"]
 	path = fragmenty-spider
-	url = git@github.com:Maders/fragmenty-spider.git
+	url = https://github.com/Maders/fragmenty-spider.git
