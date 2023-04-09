@@ -3,6 +3,10 @@ resource "aws_security_group" "allow_web" {
   description = "Allow inbound traffic on port 80"
   vpc_id      = var.vpc_id
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   ingress {
     from_port   = 80
     to_port     = 80
@@ -25,14 +29,16 @@ resource "aws_lb_target_group" "fragmenty" {
   protocol = "HTTP"
   vpc_id   = var.vpc_id
 
-  # health_check {
-  #   enabled             = true
-  #   interval            = 30
-  #   path                = "/api/healthcheck" # Replace with your service's health check path
-  #   timeout             = 5
-  #   healthy_threshold   = 3
-  #   unhealthy_threshold = 3
-  # }
+  lifecycle {
+    prevent_destroy = true
+  }
+
+
+  health_check {
+    path                = "/healthcheck"
+    healthy_threshold   = 5
+    unhealthy_threshold = 2
+  }
 }
 
 resource "aws_lb_listener" "fragmenty" {
@@ -46,20 +52,20 @@ resource "aws_lb_listener" "fragmenty" {
   }
 }
 
-resource "aws_lb_listener_rule" "api_rule" {
-  listener_arn = aws_lb_listener.fragmenty.arn
+# resource "aws_lb_listener_rule" "api_rule" {
+#   listener_arn = aws_lb_listener.fragmenty.arn
 
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.fragmenty.arn
-  }
+#   action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.fragmenty.arn
+#   }
 
-  condition {
-    path_pattern {
-      values = ["/api*"]
-    }
-  }
-}
+#   condition {
+#     path_pattern {
+#       values = ["/api*"]
+#     }
+#   }
+# }
 
 
 

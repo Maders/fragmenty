@@ -9,3 +9,4 @@ output "spider_sha" {
 output "api_sha" {
   value = data.external.git_hash_api.result["sha_commit"]
 }
+
