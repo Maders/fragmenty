@@ -43,5 +43,14 @@ variable "lambda_container_image_name" {
 
 variable "play_container_image_name" {
   description = "The name of the application docker image that you build locally"
-  default     = "api"
+  default     = "api-0.0.3"
+}
+
+variable "api_allowed_hosts" {
+  description = "The play framework allowed hosts"
+  default     = "."
+}
+
+variable "default_sg" {
+  description = "The default security group for your vpc"
 }

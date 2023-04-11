@@ -5,6 +5,7 @@ resource "aws_ecs_cluster" "fragmenty" {
 resource "aws_security_group" "ecs_instance" {
   name        = "ecs-instance-sg"
   description = "Security group for ECS instance"
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 22
@@ -16,13 +17,6 @@ resource "aws_security_group" "ecs_instance" {
   ingress {
     from_port   = 51678
     to_port     = 51678
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 9000
-    to_port     = 9000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -119,7 +113,12 @@ resource "aws_ecs_task_definition" "fragmenty" {
         {
           "name" : "MONGODB_URI",
           "value" : "${var.mongo_uri}"
+        },
+        {
+          "name" : "ALLOWED_HOSTS",
+          "value" : "${var.api_allowed_hosts}"
         }
+
       ],
       "logConfiguration" : {
         "logDriver" : "awslogs",
@@ -135,7 +134,7 @@ resource "aws_ecs_task_definition" "fragmenty" {
 }
 
 resource "aws_ecs_service" "fragmenty" {
-  depends_on      = [aws_ecs_task_definition.fragmenty]
+  depends_on      = [aws_ecs_task_definition.fragmenty, aws_lb_target_group.fragmenty]
   name            = "fragmenty-scala-play-service"
   cluster         = aws_ecs_cluster.fragmenty.id
   task_definition = aws_ecs_task_definition.fragmenty.arn
@@ -152,9 +151,5 @@ resource "aws_ecs_service" "fragmenty" {
 resource "aws_cloudwatch_log_group" "fragmenty" {
   name              = "/ecs/fragmenty-scala-play-app"
   retention_in_days = 14
-
-  lifecycle {
-    prevent_destroy = true
-  }
 
 }

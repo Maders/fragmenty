@@ -85,10 +85,6 @@ resource "aws_cloudwatch_event_rule" "scrapy_lambda_schedule" {
 resource "aws_cloudwatch_log_group" "scrapy_lambda_schedule" {
   name              = "/aws/lambda/ScrapyLambdaFunction"
   retention_in_days = 7 # Change this value to the desired number of days
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 
