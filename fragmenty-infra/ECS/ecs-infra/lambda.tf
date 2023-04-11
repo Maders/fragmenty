@@ -35,6 +35,13 @@ resource "aws_iam_role_policy" "lambda_exec_policy" {
   })
 }
 
+# -----------------------------------------------------------------------|
+# The following comments blocks are sample config for create s3 bucket -
+# to upload your zip version of the lambda deployment package. also in -
+# aws_lambda_function block there are 4 line comments to specify lambda -
+# through s3 bucket instead of container.
+
+
 # resource "aws_s3_bucket" "example_bucket" {
 #   bucket = "lambda-fn-fragmenty"
 # }
@@ -52,13 +59,15 @@ resource "aws_iam_role_policy" "lambda_exec_policy" {
 #   acl          = "private"
 #   content_type = "application/zip"
 # }
+# -----------------------------------------------------------------------|
 
 resource "aws_lambda_function" "scrapy_lambda" {
   function_name = "ScrapyLambdaFunction"
+  # if you want to deploy lamnbda by zip file the following line are config sample
   # s3_bucket     = aws_s3_object.lambda_deployment_package.bucket
   # s3_key        = aws_s3_object.lambda_deployment_package.key
-  # handler       = "fragmenty.lambda_handler.lambda_handler" # Replace with your Scrapy handler function
-  # runtime       = "python3.9"                               # Ensure you are using a supported Python runtime for your Scrapy project
+  # handler       = "fragmenty.lambda_handler.lambda_handler"
+  # runtime       = "python3.9"
   role = aws_iam_role.lambda_exec_role.arn
 
   package_type = "Image"

@@ -2,5 +2,7 @@
 resource "aws_ecr_repository" "scrapy_lambda_repository" {
   name = "fragmenty-registry"
 
-  force_delete = true
+  lifecycle {
+    prevent_destroy = true
+  }
 }

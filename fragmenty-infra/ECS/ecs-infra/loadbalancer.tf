@@ -76,7 +76,7 @@ resource "aws_lb" "fragmenty" {
     aws_security_group.allow_https.id,
     var.default_sg
   ]
-  subnets            = var.subnets
+  subnets = var.subnets
 
   depends_on = [aws_s3_bucket.lb_access_logs]
   access_logs {
