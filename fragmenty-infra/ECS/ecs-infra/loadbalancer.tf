@@ -53,11 +53,29 @@ resource "aws_security_group" "allow_web" {
   }
 }
 
+resource "aws_security_group" "allow_https" {
+  name        = "allow_https"
+  description = "Allow inbound traffic on port 443"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+
 resource "aws_lb" "fragmenty" {
   name               = "fragmenty-lb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.allow_web.id, var.default_sg]
+  security_groups = [
+    aws_security_group.allow_web.id,
+    aws_security_group.allow_https.id,
+    var.default_sg
+  ]
   subnets            = var.subnets
 
   depends_on = [aws_s3_bucket.lb_access_logs]
@@ -93,20 +111,36 @@ resource "aws_lb_listener" "fragmenty" {
   }
 }
 
-# resource "aws_lb_listener_rule" "api_rule" {
-#   listener_arn = aws_lb_listener.fragmenty.arn
+resource "aws_lb_listener_rule" "redirect_http_to_https" {
+  listener_arn = aws_lb_listener.fragmenty.arn
+  priority     = 1
 
-#   action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.fragmenty.arn
-#   }
+  action {
+    type = "redirect"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
 
-#   condition {
-#     path_pattern {
-#       values = ["/api*"]
-#     }
-#   }
-# }
+  condition {
+    path_pattern {
+      values = ["/*"]
+    }
+  }
+}
 
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.fragmenty.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate_validation.cert.certificate_arn
 
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.fragmenty.arn
+  }
+}
 
