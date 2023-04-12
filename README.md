@@ -2,9 +2,9 @@
 
 ## What is the project?
 
-This is a small side project to crawl Telegram's [Fragment](fragment.com/numbers) platform to extract numbers data and serve them as REST and WebSocket APIs and visualize through a chart.
+This is a small side project that crawls the [Fragment](fragment.com/numbers) Telegram platform to extract data about phone numbers, and provides a RESTful API, WebSocket API, and visualization of the data through a chart.
 
-The goal of this project is to extract data and basic insights about Telegram numbers auction, also learn more about the Play framework and Scala.
+The goal of this project is to extract data and basic insights about Telegram numbers auction, also learn more about the Play framework, Scala, Terraform and AWS.
 
 ## Stack:
 
