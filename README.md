@@ -18,6 +18,8 @@ The goal of this project is to extract data and basic insights about Telegram nu
 
 ## Infrastructure Architecture
 
+![AWS Infrastructure Architecture](https://user-images.githubusercontent.com/9904514/232056685-59e7a744-c581-41db-be9c-7eca62dd7f5d.png)
+
 This project uses Amazon Web Services (AWS) for infrastructure provisioning. The infrastructure is organized into different components, with each component residing in its own directory under the `fragmenty-infra` directory.
 
 ### Components:
@@ -42,6 +44,12 @@ The MongoDB Atlas infrastructure is also set up using Terraform and consists of 
 
 - MongoDB Atlas Cluster
 - MongoDB Atlas Database Users
+
+![graphviz terraform graph](https://user-images.githubusercontent.com/9904514/232057419-4d79fc97-0260-49de-a5d0-e5ec9e804178.svg)
+<p align="center">
+  Visualized Terraform graph
+</p>
+
 
 ## Deployment Workflow
 
