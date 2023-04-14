@@ -46,10 +46,10 @@ The MongoDB Atlas infrastructure is also set up using Terraform and consists of 
 - MongoDB Atlas Database Users
 
 ![graphviz terraform graph](https://user-images.githubusercontent.com/9904514/232057419-4d79fc97-0260-49de-a5d0-e5ec9e804178.svg)
+
 <p align="center">
   Visualized Terraform graph
 </p>
-
 
 ## Deployment Workflow
 
@@ -74,6 +74,12 @@ git clone --recurse-submodules https://github.com/Maders/fragmenty.git
 ```
 
 ## Useful Commands
+
+To initialize the working directory, run the following command in the respective directories:
+
+```sh
+terraform init
+```
 
 To apply the infrastructure changes, run the following command in the respective directories:
 
