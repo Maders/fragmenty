@@ -18,7 +18,7 @@ The goal of this project is to extract data and basic insights about Telegram nu
 
 ## Infrastructure Architecture
 
-![AWS Infrastructure Architecture](https://user-images.githubusercontent.com/9904514/232056685-59e7a744-c581-41db-be9c-7eca62dd7f5d.png)
+![AWS Infrastructure architecture](https://user-images.githubusercontent.com/9904514/232190918-bc74bec6-857b-4f08-8e73-68c4c07df27e.png)
 
 This project uses Amazon Web Services (AWS) for infrastructure provisioning. The infrastructure is organized into different components, with each component residing in its own directory under the `fragmenty-infra` directory.
 
